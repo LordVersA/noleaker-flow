@@ -1,0 +1,38 @@
+body {
+  width: 320px;
+  padding: 14px;
+}
+
+header h1 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+}
+
+.power {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.notice {
+  margin-top: 10px;
+  border-color: var(--warn);
+}
+
+.notice p {
+  margin: 0 0 8px;
+}
+
+#rule {
+  color: var(--warn);
+}
+
+.small {
+  font-size: 12px;
+}

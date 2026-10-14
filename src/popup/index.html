@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>noleaker flow</title>
+    <link rel="stylesheet" href="../shared/theme.css" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>NOLEAKER FLOW</h1>
+    </header>
+
+    <section class="card power">
+      <div>
+        <div class="title">Google Flow unlock</div>
+        <div class="muted" id="sub"></div>
+      </div>
+      <input type="checkbox" id="toggle" class="switch" aria-label="Google Flow unlock" />
+    </section>
+
+    <section class="card notice" id="access" hidden>
+      <p>
+        Firefox has not given this extension access to the Flow pages, so the unlock cannot run.
+      </p>
+      <button type="button" class="btn" id="grant">Allow access to Flow</button>
+    </section>
+
+    <p class="muted" id="rule" hidden></p>
+
+    <p class="muted small">
+      On flow.google.com and labs.google/fx/tools/flow only, it rewrites the country check in Flow's
+      own answers and sends the tab back to Flow if it lands on the "unsupported country" page. It
+      does not route traffic: use a proxy (for example noleaker) for that. Open Flow tabs need a
+      reload after you change the switch.
+    </p>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

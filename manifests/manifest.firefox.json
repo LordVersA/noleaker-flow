@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "noleaker flow",
+  "version": "0.1.0",
+  "description": "Google Flow unlock: rewrites Flow's country check and sends you back from its unsupported-country page.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "noleaker-flow@lordversa.github.io",
+      "strict_min_version": "140.0",
+      "update_url": "https://github.com/LordVersA/noleaker-flow/releases/latest/download/updates.json",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "permissions": ["storage", "scripting", "webNavigation", "declarativeNetRequest"],
+  "host_permissions": ["https://flow.google.com/*", "https://labs.google/*"],
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+  "action": {
+    "default_title": "noleaker flow",
+    "default_popup": "popup/index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

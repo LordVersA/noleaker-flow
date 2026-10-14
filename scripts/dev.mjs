@@ -1,0 +1,53 @@
+// Build once, then watch each bundle in its own Vite process.
+// Usage: node scripts/dev.mjs [chrome|firefox] (default chrome) → dist/<target>/.
+import { execFileSync, spawn } from 'node:child_process';
+import { resolve } from 'node:path';
+
+const vite = resolve(import.meta.dirname, '../node_modules/vite/bin/vite.js');
+const builds = [
+  ['--config', 'vite.config.ts', '--mode', 'development'],
+  ['--config', 'vite.content.config.ts'],
+];
+const target = process.argv[2] ?? 'chrome';
+if (target !== 'chrome' && target !== 'firefox') throw new Error('usage: dev.mjs [chrome|firefox]');
+const env = { ...process.env, NOLEAKER_DEV: '1', NOLEAKER_TARGET: target };
+const children = new Set();
+let stopping = false;
+
+function stop(code = 0) {
+  if (stopping) return;
+  stopping = true;
+  process.exitCode = code;
+  for (const child of children) child.kill('SIGTERM');
+}
+
+process.once('SIGINT', () => stop());
+process.once('SIGTERM', () => stop());
+
+try {
+  // Initial clean build guarantees every script exists before loading the extension.
+  for (const args of builds) {
+    execFileSync(process.execPath, [vite, 'build', ...args], { env, stdio: 'inherit' });
+  }
+  for (const args of builds) {
+    const child = spawn(process.execPath, [vite, 'build', ...args, '--watch'], {
+      env: { ...env, NOLEAKER_WATCH: '1' },
+      stdio: 'inherit',
+    });
+    children.add(child);
+    child.on('error', (error) => {
+      console.error(error);
+      stop(1);
+    });
+    child.on('exit', () => {
+      children.delete(child);
+      if (!stopping) stop(1);
+    });
+  }
+  console.log(
+    `Watching ${target}: popup, background and page script. Reload the extension after changes.`,
+  );
+} catch (error) {
+  console.error(error);
+  stop(1);
+}
