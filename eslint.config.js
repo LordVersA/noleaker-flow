@@ -17,11 +17,8 @@ export default tseslint.config(
       },
     },
   },
-    },
-  },
   // Platform code is reached only through the build-time `@platform/*` alias, so each bundle holds
-  // only its own target's code. src/shared/ is platform-free; the Chrome proxy API stays in
-  // src/platform/chrome/.
+  // only its own target's code. src/shared/ and src/flow/ are platform-free.
   {
     files: ['src/**/*.ts'],
     ignores: ['src/platform/**'],
@@ -37,10 +34,6 @@ export default tseslint.config(
       'no-restricted-syntax': [
         'error',
         {
-          selector: "MemberExpression[object.name='chrome'][property.name='proxy']",
-          message: 'chrome.proxy is Chrome-only: move it to src/platform/chrome/.',
-        },
-        {
           selector: "MemberExpression[object.name='browser']",
           message:
             'Use the chrome.* namespace in shared code; browser.* belongs in src/platform/firefox/.',
@@ -49,7 +42,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/shared/**/*.ts'],
+    files: ['src/shared/**/*.ts', 'src/flow/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
